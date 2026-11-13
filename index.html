@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#131B30">
+<title>مقطع ودرس</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23131B30'/%3E%3Crect x='12' y='36' width='40' height='12' rx='3' fill='%23FFD23F'/%3E%3Crect x='12' y='18' width='28' height='7' rx='3' fill='%23F4F6FB'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Kufi+Arabic:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: cool paper everywhere; the one loud surface is the navy prompter that carries
+     the English words, with a highlighter mark that follows the speaker. */
+  --paper:#EDF0F5;
+  --surface:#FFFFFF;
+  --ink:#141C30;
+  --muted:#5B657A;
+  --line:#D3D9E4;
+  --prompter:#131B30;
+  --prompter-2:#1C2643;
+  --prompter-ink:#F4F6FB;
+  --prompter-muted:#8E9BB8;
+  --mark:#FFD23F;
+  --mark-ink:#201800;
+  --good:#1C8754;
+  --bad:#C23B30;
+  --font-ar:"IBM Plex Sans Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
+  --font-head:"Noto Kufi Arabic","IBM Plex Sans Arabic","Geeza Pro",Tahoma,sans-serif;
+  --font-en:"Newsreader","Iowan Old Style",Georgia,serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0B111E; --surface:#141C2E; --ink:#E8ECF5; --muted:#97A2B8; --line:#273249;
+    --prompter:#141D36; --prompter-2:#1E2A4B; --good:#49C48A; --bad:#F2776C;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ar);font-size:17px;line-height:1.75}
+button,input,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sr{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+[hidden]{display:none !important}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-inline-size:1320px;margin:0 auto;padding:12px 20px;block-size:58px}
+.brand{background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-head);font-weight:700;font-size:1.2rem;color:var(--ink)}
+.brand .hl{background:var(--mark);color:var(--mark-ink);padding:0 .35em;border-radius:5px}
+.seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:8px;padding:5px 16px;cursor:pointer;font-weight:500}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+main{max-inline-size:1320px;margin:0 auto;padding:4px 20px 72px}
+body.fixed{overflow:hidden}
+body.fixed main{padding-block-end:0}
+
+h1{font-family:var(--font-head);font-weight:700;font-size:clamp(1.5rem,1.15rem + 1.7vw,2.2rem);line-height:1.4;margin:0;text-wrap:balance}
+h2{font-family:var(--font-head);font-weight:700;font-size:1.1rem;margin:0}
+.lede{margin:0;color:var(--muted);max-inline-size:58ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 16px;cursor:pointer;font-weight:500;text-decoration:none;line-height:1.5}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn-mark{background:var(--mark);color:var(--mark-ink);border-color:var(--mark);font-weight:600}
+.msg{color:var(--muted);font-size:.92rem;margin:0}
+.msg.err{color:var(--bad)}
+.en-line{display:block;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:600;font-size:1.05rem}
+.pill{display:inline-block;background:var(--mark);color:var(--mark-ink);border-radius:999px;padding:0 9px;font-size:.75rem;font-weight:600;margin-inline-end:6px}
+.prompter{background:var(--prompter);color:var(--prompter-ink);border-radius:16px}
+
+/* ---------- Home ---------- */
+.home{display:grid;gap:36px;grid-template-columns:minmax(0,1fr);max-inline-size:1120px;margin:0 auto;padding-block-start:10px}
+@media (min-width:900px){.home{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start;gap:44px}}
+.hero{display:grid;gap:16px}
+.linkbox{display:flex;flex-wrap:wrap;gap:10px;padding:14px}
+.linkbox:focus-within{outline:2px solid var(--mark);outline-offset:2px}
+#f-url{flex:1;min-inline-size:200px;background:transparent;border:0;outline:0;color:var(--prompter-ink);font-family:var(--font-en);font-size:1.2rem;padding:8px 10px;text-align:left}
+#f-url::placeholder{color:var(--prompter-muted)}
+.linkbox .btn{padding:10px 22px}
+.setup{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:18px 20px;display:grid;gap:12px}
+.setup ol{margin:0;padding-inline-start:22px;display:grid;gap:6px;color:var(--muted)}
+.setup .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.setup details summary{cursor:pointer;font-weight:500}
+.setup details[open] summary{margin-block-end:10px}
+#grab-code{inline-size:100%;block-size:84px;direction:ltr;font-family:ui-monospace,Menlo,monospace;font-size:.72rem;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:8px;resize:none}
+.shelf{display:grid;gap:12px}
+#lesson-list{display:grid;gap:10px}
+.lcard{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.lcard-main{flex:1;min-inline-size:0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;text-align:start;background:none;border:0;padding:10px 12px;cursor:pointer}
+.thumb{inline-size:96px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:var(--prompter)}
+.lcard-text{display:grid;gap:4px;min-inline-size:0}
+.lcard-title{font-weight:600;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lcard-meta{color:var(--muted);font-size:.85rem}
+.lbar{display:block;block-size:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.lbar i{display:block;block-size:100%;background:var(--mark)}
+.lcard-del{border:0;border-inline-start:1px solid var(--line);background:none;color:var(--muted);padding:0 14px;cursor:pointer;font-size:.85rem}
+.lcard-del.sure{color:var(--bad);font-weight:600}
+.empty{color:var(--muted);margin:0}
+
+/* ---------- Watch ---------- */
+.watch{display:flex;flex-direction:column;gap:12px;block-size:calc(100dvh - 62px);padding-block-end:12px}
+.side{flex:none;display:grid;gap:10px;align-content:start}
+.vbox{position:relative;inline-size:min(100%,calc(42dvh * 16 / 9));aspect-ratio:16/9;margin:0 auto;background:#000;border-radius:14px;overflow:hidden}
+.vbox iframe,.vbox #player{position:absolute;inset:0;inline-size:100%;block-size:100%;border:0}
+.vmsg{position:absolute;inset:0;margin:0;display:grid;place-items:center;text-align:center;padding:20px;color:#F4F6FB;background:#000}
+.wtitle{margin:0;font-family:var(--font-ar);font-weight:600;font-size:1rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px;cursor:pointer;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ctrl .btn-mark{margin-inline-start:auto;padding:7px 20px}
+.script{flex:1;min-block-size:0;overflow:auto;-webkit-overflow-scrolling:touch;position:relative;padding:14px 12px 40vh}
+.script.bare{padding:22px}
+.line{padding:10px 14px;border-radius:12px;cursor:pointer;opacity:.4;transition:opacity .25s,background-color .25s}
+.line.cur{opacity:1;background:var(--prompter-2)}
+.l-en{margin:0;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:500;font-size:clamp(1.25rem,1.05rem + .9vw,1.6rem);line-height:1.5;overflow-wrap:anywhere}
+.w{border-radius:4px;padding:0 .06em}
+.w.fn{text-decoration:underline dotted;text-decoration-color:color-mix(in srgb,var(--mark) 75%,transparent);text-underline-offset:5px;text-decoration-thickness:2px}
+.line.cur.kara .w{color:var(--prompter-muted)}
+.line.cur.kara .w.said{color:var(--prompter-ink)}
+.line.cur.kara .w.now{background:var(--mark);color:var(--mark-ink)}
+.l-ar{margin:4px 0 0;color:var(--prompter-muted);font-size:1rem;line-height:1.7;min-block-size:0}
+.line.cur .l-ar{color:#DCE2F0}
+.no-ar .l-ar{display:none}
+.need{display:grid;gap:14px;max-inline-size:560px}
+.need h2{color:var(--prompter-ink)}
+.need p{margin:0;color:#C9D1E3}
+.need .btn{justify-self:start}
+.need textarea{inline-size:100%;min-block-size:120px;background:var(--prompter-2);border:1px solid #33406A;border-radius:10px;color:var(--prompter-ink);padding:10px 12px;direction:ltr;text-align:left;font-family:var(--font-en);font-size:1.05rem}
+.need details summary{cursor:pointer;color:#C9D1E3}
+.need details[open] summary{margin-block-end:10px}
+.need a.plain{color:var(--mark)}
+.endbar{position:sticky;inset-block-end:0;margin-block-start:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--mark);color:var(--mark-ink);border-radius:12px;padding:10px 14px;font-weight:600}
+.endbar .btn{border-color:var(--mark-ink);background:var(--mark-ink);color:var(--mark)}
+@media (min-width:1000px) and (orientation:landscape){
+  .watch{flex-direction:row;align-items:stretch;gap:18px}
+  .side{flex:1.35;min-inline-size:0}
+  .vbox{inline-size:min(100%,calc((100dvh - 190px) * 16 / 9))}
+  .script{flex:1;padding-block-end:50vh}
+}
+
+/* word sheet */
+.sheet{position:fixed;inset-inline:0;inset-block-end:0;z-index:20;margin:0 auto;max-inline-size:640px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-block-end:0;border-radius:18px 18px 0 0;padding:18px 20px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(8,12,24,.28);display:grid;gap:10px}
+.sh-en{margin:0;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:600;font-size:2rem;line-height:1.2}
+.sh-ar{margin:0;font-size:1.3rem;font-weight:500;min-block-size:1.75em}
+.sh-note{margin:0;color:var(--muted);border-inline-start:4px solid var(--mark);padding-inline-start:12px}
+.sh-act{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------- Study ---------- */
+.study{max-inline-size:760px;margin:0 auto;display:grid;gap:16px;padding-block-start:6px}
+.shead{display:grid;gap:8px}
+.shead h1{font-family:var(--font-ar);font-weight:600;font-size:1.15rem;overflow-wrap:anywhere}
+.banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 14px;font-size:.95rem}
+.banner .live{display:flex;align-items:center;gap:10px}
+.dot{inline-size:9px;block-size:9px;border-radius:50%;background:var(--mark);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}.line{transition:none}.script{scroll-behavior:auto}}
+.panel{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;display:grid;gap:10px}
+.panel label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.panel input[type=checkbox],.opt-line input{inline-size:18px;block-size:18px;accent-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tab{flex:1;border:0;background:transparent;border-radius:9px;padding:8px 6px;cursor:pointer;font-weight:500}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.opt-line{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;cursor:pointer}
+.progress{display:flex;align-items:center;gap:12px}
+.bar{flex:1;block-size:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;block-size:100%;background:var(--mark)}
+.count{font-family:var(--font-en);font-variant-numeric:tabular-nums;color:var(--muted);font-size:1rem}
+.stage{padding:28px 26px 18px;min-block-size:190px;display:grid;gap:20px;align-content:space-between}
+.sent{margin:0;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:500;font-size:clamp(1.45rem,1.1rem + 1.9vw,2.2rem);line-height:1.42;text-wrap:pretty;overflow-wrap:anywhere}
+.sent mark,.q-en mark{background:var(--mark);color:var(--mark-ink);border-radius:4px;padding:0 .12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.listen{display:flex;flex-wrap:wrap;gap:8px}
+.pbtn{background:transparent;border:1px solid color-mix(in srgb,var(--prompter-ink) 30%,transparent);color:var(--prompter-ink);border-radius:999px;padding:5px 16px;font-size:.9rem;cursor:pointer}
+.pbtn:focus-visible{outline-color:var(--mark)}
+.reveal{inline-size:100%;border:1.5px dashed var(--line);background:transparent;border-radius:14px;padding:22px 16px;color:var(--muted);cursor:pointer}
+.explain{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:grid;gap:18px}
+.tr{margin:0;font-size:1.2rem;line-height:1.85;font-weight:500}
+.explain h3{margin:0 0 8px;font-size:.8rem;font-weight:600;color:var(--muted)}
+.vocab{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));direction:ltr}
+.vocab li{border:1px solid var(--line);border-radius:10px;padding:8px 12px;position:relative}
+.v-en{display:block;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:600;font-size:1.12rem}
+.v-ar{display:block;direction:rtl;text-align:right;color:var(--muted);font-size:.95rem}
+.v-del{position:absolute;inset-block-start:4px;inset-inline-end:6px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:.8rem;direction:rtl}
+.g-en{display:block;inline-size:fit-content;margin-left:0;margin-right:auto;direction:ltr;background:var(--mark);color:var(--mark-ink);font-family:var(--font-en);font-weight:600;font-size:1.12rem;border-radius:6px;padding:0 12px}
+.g-ar{margin:8px 0 0}
+.stepnav{position:sticky;inset-block-end:0;display:flex;gap:10px;padding:12px 0 14px;background:linear-gradient(to top,var(--paper) 72%,transparent)}
+.stepnav .btn{flex:1;padding:12px}
+.quiz{display:grid;gap:16px}
+.q-label{margin:0;color:var(--muted);font-size:.95rem}
+.q-en{margin:0;direction:ltr;text-align:left;font-family:var(--font-en);font-size:clamp(1.3rem,1.1rem + 1vw,1.7rem);line-height:1.55;overflow-wrap:anywhere}
+.gap{display:inline-block;min-inline-size:3.4em;border-block-end:3px solid var(--mark);text-align:center}
+.q-word{margin:0;direction:ltr;text-align:left;font-family:var(--font-en);font-weight:600;font-size:2rem;line-height:1.3}
+.q-ar{margin:0;font-size:1.15rem;font-weight:500}
+.opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.opt{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px;cursor:pointer;font-size:1.08rem}
+.opt.en{font-family:var(--font-en);font-size:1.2rem}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 15%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 13%,var(--surface))}
+.built,.bank{display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
+.built{min-block-size:56px;border-block-end:2px solid var(--line);padding-block-end:8px;align-content:flex-start}
+.wd{font-family:var(--font-en);font-size:1.15rem;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 12px;cursor:pointer}
+.wd.used{visibility:hidden}
+.fb{border:1px solid var(--line);border-inline-start-width:5px;border-radius:10px;padding:12px 16px;display:grid;gap:4px;background:var(--surface)}
+.fb.ok{border-color:var(--good)}
+.fb.no{border-color:var(--bad)}
+.fb p{margin:0}
+.fb strong{font-family:var(--font-head)}
+.fb-en{display:block;direction:ltr;text-align:left;font-family:var(--font-en);font-size:1.2rem;font-weight:600}
+.fb-tr{color:var(--muted)}
+.result{display:grid;gap:12px;justify-items:start}
+.score{margin:0;font-family:var(--font-en);font-weight:600;font-size:3.2rem;line-height:1.1;font-variant-numeric:tabular-nums}
+#toast{position:fixed;z-index:30;inset-block-end:18px;inset-inline:0;margin:0 auto;inline-size:fit-content;max-inline-size:calc(100% - 32px);background:var(--ink);color:var(--paper);border-radius:10px;padding:8px 16px;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="brand" data-a="home" aria-label="الرئيسية">مقطع <span class="hl">ودرس</span></button>
+  <div id="topnav"></div>
+</header>
+<main id="app"></main>
+<div id="sheet-host"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+const GRAB = "!async function(){var e=function(e){alert(\"مقطع ودرس\\n\\n\"+e)};try{var t=location.href.match(/[?&]v=([\\w-]{11})/)||location.pathname.match(/\\/(?:shorts|live|embed)\\/([\\w-]{11})/);if(!/(^|\\.)youtube\\.com$/.test(location.hostname)||!t)return void e(\"افتح مقطع يوتيوب في سفاري أولاً، ثم اضغط هذا الزر.\");var n=t[1],r=[],a=[],i=function(e){return new Promise(function(t){setTimeout(t,e)})},o=(document.title||\"\").replace(/^\\(\\d+\\)\\s*/,\"\").replace(/\\s*-\\s*YouTube\\s*$/,\"\"),c=document.getElementById(\"movie_player\")||document.querySelector(\".html5-video-player\");try{var s=function(){return performance.getEntriesByType(\"resource\").map(function(e){return e.name}).filter(function(e){return e.indexOf(\"/api/timedtext\")>-1&&e.indexOf(\"v=\"+n)>-1&&/[?&]lang=en/i.test(e)&&!/[?&]tlang=/.test(e)})},l=[];try{l=c.getPlayerResponse().captions.playerCaptionsTracklistRenderer.captionTracks||[]}catch(e){}var u=l.filter(function(e){return/^en/i.test(e.languageCode||\"\")});u.sort(function(e,t){return(\"asr\"===e.kind)-(\"asr\"===t.kind)});var f=s();if(!f.length&&c&&c.setOption){try{c.loadModule&&c.loadModule(\"captions\")}catch(e){}try{c.setOption(\"captions\",\"track\",{languageCode:u.length?u[0].languageCode:\"en\"})}catch(e){}for(var p=0;p<20&&!f.length;p++)await i(250),f=s()}if(f.length){var h=f[f.length-1].replace(/([?&])fmt=[^&]*/,\"$1fmt=json3\");h.indexOf(\"fmt=json3\")<0&&(h+=\"&fmt=json3\"),((await(await fetch(h)).json()).events||[]).forEach(function(e){(e.segs||[]).forEach(function(t){var n=(t.utf8||\"\").replace(/\\s+/g,\" \").trim();n&&a.push([((e.tStartMs||0)+(t.tOffsetMs||0))/1e3,n])})}),a.length||r.push(\"A:empty\")}else r.push(l.length?u.length?\"A:no-request\":\"A:no-english\":\"A:no-tracks\")}catch(e){r.push(\"A:\"+(e&&e.message)),a=[]}if(!a.length)try{var d=function(){return document.querySelector('ytd-engagement-panel-section-list-renderer[target-id*=\"transcript\"]')},g=function(){var e=d(),t=[],n=-1;return e?((e.innerText||\"\").split(\"\\n\").forEach(function(e){var r=(e=e.trim()).match(/^(?:(\\d+):)?(\\d{1,2}):(\\d{2})$/);r?n=3600*(+r[1]||0)+60*+r[2]+ +r[3]:e&&n>=0&&t.push([n,e])}),t):t};if(!(a=g()).length){var m=d();m&&m.setAttribute(\"visibility\",\"ENGAGEMENT_PANEL_VISIBILITY_EXPANDED\");var v=[].slice.call(document.querySelectorAll(\"ytd-video-description-transcript-section-renderer button, button[aria-label]\")).filter(function(e){return/transcript|النص/i.test((e.getAttribute(\"aria-label\")||\"\")+\" \"+(e.textContent||\"\"))})[0];v&&v.click();for(var y=0;y<24&&!a.length;y++)await i(250),a=g()}a.length||r.push(d()?\"B:empty\":\"B:no-panel\")}catch(e){r.push(\"B:\"+(e&&e.message)),a=[]}if(!a.length)return void e(\"ما قدرت أسحب كلام هذا المقطع. تأكد أن له كلام مكتوب بالإنجليزي، وشغّله ثواني ثم اضغط الزر مرة ثانية.\\n\\n\"+r.join(\" | \"));var E=a.map(function(e){return Math.round(10*e[0]).toString(36)+\"|\"+e[1]}).join(\"\\n\");E.length>52e3&&(E=(E=E.slice(0,52e3)).slice(0,E.lastIndexOf(\"\\n\")));var b=btoa(unescape(encodeURIComponent(n+\"\\n\"+o+\"\\n\"+E))).replace(/\\+/g,\"-\").replace(/\\//g,\"_\").replace(/=+$/,\"\");try{c&&c.pauseVideo&&c.pauseVideo()}catch(e){}location.href=\"__SITE__#g=\"+b}catch(t){e(\"صار خطأ: \"+(t&&t.message))}}();";
+
+/* ================= helpers ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const isAr = s => /[؀-ۿ]/.test(s || '');
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const wordsOf = s => String(s || '').split(/\s+/).filter(Boolean);
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+};
+function savedCount(n) { return n === 1 ? 'كلمة محفوظة' : n === 2 ? 'كلمتان محفوظتان' : n <= 10 ? n + ' كلمات محفوظة' : n + ' كلمة محفوظة'; }
+function sentCount(n) { if (!n) return 'بدون كلام بعد'; if (n === 1) return 'جملة واحدة'; if (n === 2) return 'جملتان'; return n <= 10 ? n + ' جمل' : n + ' جملة'; }
+let toastTimer = 0;
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 3400); }
+const norm = x => String(x || '').toLowerCase().replace(/’/g, "'").replace(/[^a-z'-]+/g, '').replace(/^['-]+|['-]+$/g, '').replace(/'s$/, '');
+
+/* ================= the small words: fixed notes, Arabic only ================= */
+const NOTES = {
+  is: 'تأتي في الحاضر مع المفرد الغائب: هو، هي، أو اسم واحد.',
+  are: 'تأتي في الحاضر مع الجمع ومع المخاطب: نحن، أنتم، هم.',
+  am: 'تأتي في الحاضر مع المتكلم المفرد فقط.',
+  was: 'ماضي فعل الكينونة مع المفرد: أنا، هو، هي، أو اسم واحد.',
+  were: 'ماضي فعل الكينونة مع الجمع ومع المخاطب: نحن، أنتم، هم.',
+  be: 'الصورة الأساسية لفعل الكينونة، تأتي بعد الأفعال المساعدة.',
+  been: 'التصريف الثالث لفعل الكينونة، يأتي بعد المساعد في الأزمنة التامة.',
+  has: 'للملكية، أو مساعد للمضارع التام، مع المفرد الغائب.',
+  have: 'للملكية، أو مساعد للمضارع التام، مع غير المفرد الغائب.',
+  had: 'ماضي الملكية، أو مساعد لحدث وقع قبل حدث آخر في الماضي.',
+  do: 'مساعد للسؤال والنفي في الحاضر مع غير المفرد الغائب.',
+  does: 'مساعد للسؤال والنفي في الحاضر مع المفرد الغائب.',
+  did: 'مساعد للسؤال والنفي في الماضي مع كل الضمائر.',
+  will: 'تدل على المستقبل، وبعدها الفعل في صورته الأساسية.',
+  would: 'للطلب المهذب أو للافتراض، وبعدها الفعل في صورته الأساسية.',
+  can: 'تدل على القدرة أو الإمكان، وبعدها الفعل في صورته الأساسية.',
+  could: 'ماضي القدرة، أو للطلب المهذب والاحتمال.',
+  should: 'للنصيحة أو لما يُفترض فعله.',
+  must: 'للإلزام القوي أو للاستنتاج المؤكد.',
+  a: 'قبل اسم مفرد غير محدد يبدأ بصوت ساكن.',
+  an: 'قبل اسم مفرد غير محدد يبدأ بصوت متحرك.',
+  the: 'أداة التعريف: لشيء محدد يعرفه المتكلم والسامع.',
+  in: 'داخل مكان، أو مع الشهور والسنين والمدن.',
+  on: 'فوق سطح، أو مع الأيام والتواريخ.',
+  at: 'عند نقطة محددة: مكان معيّن أو ساعة معيّنة.',
+  to: 'اتجاه نحو شيء، أو قبل الفعل في صورته الأساسية.',
+  of: 'تدل على الانتماء أو على جزء من كل.',
+  for: 'لأجل شخص أو هدف، أو لمدة من الزمن.',
+  with: 'بصحبة أحد، أو باستخدام شيء.',
+  from: 'نقطة البداية أو المصدر.',
+  by: 'الفاعل في المبني للمجهول، أو الوسيلة، أو قبل موعد محدد.'
+};
+const FN_ORDER = ['is', 'are', 'was', 'were', 'am', 'has', 'have', 'had', 'does', 'did', 'do', 'been', 'be', 'will', 'would', 'can', 'could', 'should', 'must', 'the', 'an', 'at', 'on', 'in', 'of', 'for', 'with', 'from', 'by', 'to', 'a'];
+/* everyday words that are not worth a vocabulary card */
+const BASIC = new Set(('about above across after again against almost along already always among another answer anything around because become before began begin behind being believe below better between black bring brother brought build called came cannot change child children clean clear close color could country course didn doesn doing don done door down during each early earth easy eight either enough even evening ever every everybody everyone everything example face fact family father feel find first five follow food found four friend from front gave general getting girl give given going gone good great green group hand happen happy hard have having head hear heard heart help here high himself home hope hour house however hundred idea important into just keep kind knew know known large last late later learn least leave left less letter life light like line little live long look love made make making many maybe mean might million mind minute money month more morning most mother move much music must myself name near need never next nice night nothing number often once only open order other others our over paper part people person place plan play please point problem put question quite read ready real really reason right room said same saying school second seem seen several shall should show side since sister small some somebody someone something sometimes soon sorry sound start started state still stop story street strong study such sure table take taken talk tell than thank thanks that their them themselves then there these they thing things think third this those though thought thousand three through time today together told tomorrow tonight took toward town tree true trying turn under understand until upon used using very wait walk want wanted watch water week well went were what when where whether which while white whole whose will with without woman women word words work working world would write wrong year years yesterday young your yours yourself ' +
+  'american americans going gonna wanna gotta okay yeah hello folks ladies gentlemen everybody mister madam thing stuff lots').split(' '));
+function isBasic(w) {
+  if (BASIC.has(w)) return true;
+  const stems = [w.replace(/ies$/, 'y'), w.replace(/(?:es|s)$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ly$/, ''), w.replace(/(?:er|est)$/, ''), w.replace(/(.)\1(?:ing|ed)$/, '$1')];
+  return stems.some(s => s !== w && s.length > 2 && BASIC.has(s));
+}
+
+/* ================= state & storage ================= */
+const S = {
+  view: 'home', lessons: [], cur: null, li: -1, release: false, scrollHold: 0, ended: false,
+  showAr: LS.get('mw2.showAr', true), stopEach: false, slow: false,
+  tab: 'step', idx: 0, shown: false, hideFirst: LS.get('mw2.hideFirst', true), quiz: null, sents: null,
+  confirmDel: '', sheet: null, prep: null, prepErr: '', homeMsg: '', homeErr: false,
+  pdf: { open: false, lines: true, extra: true, busy: false, msg: '', err: false, file: null }
+};
+const DICT = LS.get('mw2.dict', {});
+S.lessons = LS.get('mw2.lessons', []).filter(l => l && /^[\w-]{11}$/.test(l.id || ''));
+function persist() {
+  const ok = LS.set('mw2.lessons', S.lessons.map(l => ({ id: l.id, title: l.title || '', createdAt: l.createdAt || 0, body: l.body || '', ar: l.ar || [], saved: l.saved || [], vocab: l.vocab || null, pos: l.pos || 0, seen: l.seen || 0 })));
+  if (!ok) toast('مساحة التخزين امتلأت. احذف دروساً قديمة.');
+}
+let saveTimer = 0;
+const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(persist, 900); };
+
+/* ================= transcript → timed lines ================= */
+function parseBody(body) {
+  return String(body || '').split('\n').map(r => { const p = r.indexOf('|'); if (p < 0) return null; const h = r.slice(0, p), t = h === '-' ? -1 : parseInt(h, 36) / 10; return [isNaN(t) ? -1 : t, r.slice(p + 1)]; }).filter(r => r && r[1]);
+}
+const makeBody = rows => rows.map(r => (r[0] < 0 ? '-' : Math.round(r[0] * 10).toString(36)) + '|' + r[1].replace(/\s+/g, ' ')).join('\n');
+function parsePaste(raw) {
+  const rows = []; let t = -1, timed = false;
+  const sec = k => (+k[1] || 0) * 3600 + (+k[2]) * 60 + (+k[3]);
+  String(raw || '').replace(/\r/g, '').split('\n').forEach(line => {
+    let s = line.trim(); if (!s) return;
+    let k = s.match(/^[\[(]?(?:(\d+):)?(\d{1,2}):(\d{2})[\])]?$/);
+    if (k) { t = sec(k); timed = true; return; }
+    k = s.match(/^[\[(]?(?:(\d+):)?(\d{1,2}):(\d{2})[\])]?\s+(.*)$/);
+    if (k) { t = sec(k); timed = true; s = k[4]; }
+    if (/^\d+ (?:seconds?|minutes?|hours?)(?:,? \d+ (?:seconds?|minutes?))*$/i.test(s)) return;
+    rows.push([t, s]);
+  });
+  return timed ? rows.filter(r => r[0] >= 0) : rows.map(r => [-1, r[1]]);
+}
+function buildLines(rows) {
+  const timed = rows.length > 0 && rows.every(r => r[0] >= 0);
+  const toks = [];
+  for (let i = 0; i < rows.length; i++) {
+    const t = rows[i][0];
+    const text = rows[i][1].replace(/\[[^\]]{1,40}\]/g, ' ').replace(/\((?:applause|laughter|laughs|music|cheering|cheers|crosstalk|inaudible)[^)]{0,30}\)/gi, ' ').replace(/>>+|♪/g, ' ').trim();
+    if (!text) continue;
+    const ws = text.split(/\s+/);
+    if (!timed) { ws.forEach(x => toks.push({ t: -1, x })); continue; }
+    let tn = t + 4;
+    for (let j = i + 1; j < rows.length; j++) { if (rows[j][0] > t) { tn = rows[j][0]; break; } }
+    const span = Math.min(tn - t, ws.length * 0.42 + 0.25), total = ws.join(' ').length || 1; let off = 0;
+    ws.forEach(x => { toks.push({ t: Math.round((t + span * off / total) * 100) / 100, x }); off += x.length + 1; });
+  }
+  toks.forEach(k => { k.x = k.x.replace(/^i(?=$|')/, 'I'); });
+  const precise = timed && rows.length >= toks.length * 0.6;
+  const endRe = /[.?!]["')\]]*$/;
+  const punct = toks.filter(k => endRe.test(k.x)).length >= toks.length / 40;
+  const lines = []; let cur = [];
+  const flush = () => { if (cur.length) { lines.push({ s: cur[0].t, w: cur }); cur = []; } };
+  for (let i = 0; i < toks.length; i++) {
+    const k = toks[i], nx = toks[i + 1]; cur.push(k);
+    const n = cur.length;
+    if (punct) {
+      if (endRe.test(k.x) && n >= 3 && !/^(?:mr|mrs|ms|dr|st|sen|gov|u\.s|a\.m|p\.m)\.$/i.test(k.x)) flush();
+      else if (n >= 22) {
+        let c = -1;
+        for (let j = n - 1; j >= 8; j--) { if (/[,;:]$/.test(cur[j].x)) { c = j; break; } }
+        if (c > 0) { const rest = cur.splice(c + 1); flush(); cur = rest; } else if (n >= 26) flush();
+      }
+    } else {
+      const gap = nx && timed ? nx.t - k.t : 0;
+      const weak = /^(?:a|an|the|of|to|in|on|at|for|with|and|or|but|our|my|your|their|his|her|is|are|was|were|be|that|this|I|we|you|they|he|she|it)$/i.test(k.x);
+      if (!nx) flush();
+      else if (n >= 6 && gap >= 0.7) flush();
+      else if (n >= 8 && !weak && /^(?:and|but|so|because|now|then|well|i|we|you|they|he|she|it|this|there|when|if|let|thank)$/i.test(nx.x)) flush();
+      else if ((n >= 12 && !weak) || n >= 15) flush();
+    }
+  }
+  flush();
+  lines.forEach((ln, i) => {
+    if (!punct) ln.w[0].x = ln.w[0].x.charAt(0).toUpperCase() + ln.w[0].x.slice(1);
+    ln.en = ln.w.map(k => k.x).join(' ');
+    ln.e = timed ? (lines[i + 1] ? lines[i + 1].s : ln.w[ln.w.length - 1].t + 2.5) : -1;
+  });
+  return { lines, precise, timed };
+}
+function ensureLines(l) {
+  if (l._src === l.body && l.lines) return;
+  const r = buildLines(parseBody(l.body));
+  l.lines = r.lines; l.precise = r.precise; l.timed = r.timed; l._src = l.body;
+  if (!Array.isArray(l.ar) || l.ar.length !== l.lines.length) { l.ar = new Array(l.lines.length).fill(''); l.vocab = null; }
+  if (!Array.isArray(l.saved)) l.saved = [];
+}
+function findLine(lines, t) {
+  let lo = 0, hi = lines.length - 1, r = -1;
+  while (lo <= hi) { const m = (lo + hi) >> 1; if (lines[m].s <= t + 0.08) { r = m; lo = m + 1; } else hi = m - 1; }
+  return r;
+}
+function videoId(u) {
+  u = String(u || '').trim();
+  const m = u.match(/(?:[?&]v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([\w-]{11})/);
+  return m ? m[1] : (/^[\w-]{11}$/.test(u) ? u : '');
+}
+function decodeGrab(h) {
+  const b = h.replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(b + '='.repeat((4 - b.length % 4) % 4));
+  const txt = new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+  const a = txt.indexOf('\n'), c = txt.indexOf('\n', a + 1);
+  return { id: txt.slice(0, a), title: txt.slice(a + 1, c), body: txt.slice(c + 1) };
+}
+
+/* ================= free machine translation (no account, no key) ================= */
+let gtxFails = 0, mtBlockedUntil = 0;
+async function mtOne(text) {
+  const r = await fetch('https://api.mymemory.translated.net/get?langpair=en|ar&q=' + encodeURIComponent(text.slice(0, 480)));
+  const j = await r.json(), t = j && j.responseData && j.responseData.translatedText;
+  if (!t || /MYMEMORY WARNING|QUERY LENGTH LIMIT/i.test(t)) throw new Error('mt');
+  return t;
+}
+async function mtBatch(texts) {
+  if (Date.now() < mtBlockedUntil) throw new Error('mt-wait');
+  if (gtxFails < 2) {
+    try {
+      const r = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=' + encodeURIComponent(texts.join('\n')));
+      if (!r.ok) throw new Error('gtx');
+      const j = await r.json();
+      const out = (j[0] || []).map(x => x[0] || '').join('').split('\n').map(s => s.trim());
+      gtxFails = 0;
+      if (out.length === texts.length && out.every(Boolean)) return out;
+      if (texts.length === 1) return [out.filter(Boolean).join(' ')];
+      const res = []; for (const t of texts) res.push((await mtBatch([t]))[0]); return res;
+    } catch (e) { if (e && e.message === 'mt-wait') throw e; gtxFails++; }
+  }
+  try { const res = []; for (const t of texts) res.push(await mtOne(t)); return res; }
+  catch (e) { mtBlockedUntil = Date.now() + 30000; throw e; }
+}
+async function translateIdx(l, idxs) {
+  idxs = idxs.filter(i => !l.ar[i] && !(l._pend && l._pend.has(i)));
+  if (!idxs.length) return;
+  l._pend = l._pend || new Set(); idxs.forEach(i => l._pend.add(i));
+  try {
+    const out = await mtBatch(idxs.map(i => l.lines[i].en));
+    idxs.forEach((i, k) => { l.ar[i] = out[k] || ''; const el = document.querySelector('[data-ar="' + i + '"]'); if (el && S.cur === l) el.textContent = l.ar[i]; });
+    saveSoon();
+  } finally { idxs.forEach(i => l._pend.delete(i)); }
+}
+function translateAhead(l, i) {
+  if (!S.showAr) return;
+  const idxs = []; let chars = 0;
+  for (let k = Math.max(0, i); k < l.lines.length && idxs.length < 10 && chars < 1200; k++) { if (!l.ar[k]) { idxs.push(k); chars += l.lines[k].en.length; } else if (k > i + 12) break; }
+  if (idxs.length) translateIdx(l, idxs).catch(() => {});
+}
+async function buildVocab(l) {
+  const seen = new Set((l.saved || []).map(s => s.e)), picks = {}, list = [];
+  l.lines.forEach((ln, i) => {
+    const c = [];
+    ln.w.forEach(k => { const w = norm(k.x); if (w.length >= 5 && /^[a-z]+$/.test(w) && !isBasic(w) && !seen.has(w) && !c.includes(w)) c.push(w); });
+    c.sort((a, b) => b.length - a.length);
+    picks[i] = c.slice(0, 2); picks[i].forEach(w => { seen.add(w); list.push(w); });
+  });
+  const need = list.filter(w => !DICT[w]);
+  for (let a = 0; a < need.length; a += 30) { const part = need.slice(a, a + 30), out = await mtBatch(part); part.forEach((w, k) => { if (out[k]) DICT[w] = out[k]; }); }
+  LS.set('mw2.dict', DICT);
+  l.vocab = {};
+  Object.keys(picks).forEach(i => { const v = picks[i].filter(w => DICT[w]).map(w => ({ e: w, a: DICT[w] })); if (v.length) l.vocab[i] = v; });
+}
+async function prepareStudy(l) {
+  if (S.prep) return;
+  const need = []; l.lines.forEach((_, i) => { if (!l.ar[i]) need.push(i); });
+  if (!need.length && l.vocab) return;
+  S.prep = { done: 0, total: need.length }; S.prepErr = ''; if (S.view === 'study') render();
+  try {
+    for (let a = 0; a < need.length;) {
+      const batch = []; let chars = 0;
+      while (a < need.length && batch.length < 12 && chars < 1300) { batch.push(need[a]); chars += l.lines[need[a]].en.length; a++; }
+      await translateIdx(l, batch);
+      S.prep.done = a; const el = $('#preptxt'); if (el) el.textContent = prepText();
+    }
+    if (!l.vocab) await buildVocab(l);
+  } catch (e) { S.prepErr = 'الترجمة غير متاحة الآن. تقدر تذاكر بالإنجليزي، وتجرّب الترجمة بعد قليل.'; }
+  S.prep = null; S.sents = null; persist();
+  if (S.view === 'study' && S.cur === l) render();
+}
+const prepText = () => S.prep ? 'يجهّز الترجمة: ' + S.prep.done + ' من ' + S.prep.total : '';
+
+/* ================= study sentences, quiz ================= */
+function studyOf(l) {
+  ensureLines(l);
+  const used = new Set();
+  return l.lines.map((ln, i) => {
+    const toks = ln.w.map(k => norm(k.x)), v = [];
+    (l.saved || []).forEach(s => { if (toks.includes(s.e) && !used.has(s.e) && v.length < 3) { v.push(s); used.add(s.e); } });
+    ((l.vocab && l.vocab[i]) || []).forEach(s => { if (s.a && !used.has(s.e) && v.length < 3) { v.push(s); used.add(s.e); } });
+    const gw = FN_ORDER.find(w => toks.includes(w)) || '';
+    return { en: ln.en, ar: l.ar[i] || '', v, gw, ga: gw ? NOTES[gw] : '', i };
+  });
+}
+const sentsOf = () => (S.sents || (S.sents = studyOf(S.cur)));
+const GROUPS = [['is', 'are', 'was', 'were', 'am'], ['has', 'have', 'had'], ['do', 'does', 'did'], ['a', 'an', 'the'], ['will', 'would', 'can', 'could', 'should', 'must'], ['in', 'on', 'at', 'to', 'of', 'for', 'with', 'from', 'by']];
+function gapFor(s, i) {
+  const parts = s.en.split(/(\s+)/), cands = [];
+  parts.forEach((p, k) => { const m = p.match(/^([^A-Za-z]*)([A-Za-z]+)([^A-Za-z]*)$/); if (!m) return; const w = m[2].toLowerCase(), gi = GROUPS.findIndex(g => g.includes(w)); if (gi >= 0) cands.push({ k, m, w, gi }); });
+  const gw = (s.gw || '').toLowerCase();
+  const c = cands.find(x => x.w === gw) || cands.find(x => x.gi < 4);
+  if (!c) return null;
+  const cap = /^[A-Z]/.test(c.m[2]), fix = w => (cap ? w[0].toUpperCase() + w.slice(1) : w);
+  const options = shuffle([c.w].concat(shuffle(GROUPS[c.gi].filter(w => w !== c.w)).slice(0, 3))).map(fix);
+  return { type: 'gap', before: parts.slice(0, c.k).join('') + c.m[1], after: c.m[3] + parts.slice(c.k + 1).join(''), answer: fix(c.w), options, why: NOTES[c.w] || '', ar: s.ar, i };
+}
+function vocabList(sents) {
+  const seen = new Set(), out = [];
+  sents.forEach(s => (s.v || []).forEach(v => { const k = v.e.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push({ e: v.e, a: v.a, ctx: s.en }); } }));
+  return out;
+}
+function makeQuiz(sents) {
+  const gaps = shuffle(sents.map(gapFor).filter(Boolean)).slice(0, 4);
+  const vocab = vocabList(sents), pool = Array.from(new Set(vocab.map(v => v.a)));
+  const vq = pool.length >= 4 ? shuffle(vocab).slice(0, 3).map(v => ({ type: 'vocab', word: v.e, ctx: v.ctx, answer: v.a, options: shuffle([v.a].concat(shuffle(pool.filter(a => a !== v.a)).slice(0, 3))) })) : [];
+  const orders = shuffle(sents.filter(s => { const n = wordsOf(s.en).length; return n >= 4 && n <= 10; })).slice(0, 3).map(s => {
+    const w = wordsOf(s.en); let mixed = shuffle(w);
+    for (let t = 0; t < 5 && mixed.join(' ') === w.join(' '); t++) mixed = shuffle(w);
+    return { type: 'order', words: mixed, answer: w.join(' '), ar: s.ar };
+  });
+  return shuffle(gaps.concat(vq, orders));
+}
+const startQuiz = () => { S.quiz = { qs: makeQuiz(sentsOf()), i: 0, score: 0, picked: null, built: [] }; };
+
+/* ================= speech (study mode) ================= */
+const hasSynth = 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance !== 'undefined';
+function speak(text, slow) {
+  if (!hasSynth) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = slow ? 0.6 : 0.92; speechSynthesis.speak(u); } catch (e) { toast('الصوت غير متاح على هذا الجهاز.'); }
+}
+
+/* ================= YouTube player ================= */
+let ytReady = null, player = null, ticker = 0, lastPosSave = 0;
+function loadYT() {
+  if (ytReady) return ytReady;
+  ytReady = new Promise((res, rej) => {
+    if (window.YT && window.YT.Player) return res();
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (prev) prev(); res(); };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api';
+    s.onerror = () => { ytReady = null; rej(new Error('yt')); };
+    document.head.appendChild(s);
+    setTimeout(() => { if (!(window.YT && window.YT.Player)) { ytReady = null; rej(new Error('yt-timeout')); } }, 15000);
+  });
+  return ytReady;
+}
+function vmsg(t) { const m = $('#vmsg'); if (m) { m.textContent = t; m.hidden = !t; } }
+function destroyPlayer() { clearInterval(ticker); ticker = 0; if (player) { try { player.destroy(); } catch (e) { /* ignore */ } player = null; } }
+const playing = () => { try { return player && player.getPlayerState() === 1; } catch (e) { return false; } };
+async function mountPlayer(l) {
+  destroyPlayer();
+  if (!$('#player')) return;
+  try { await loadYT(); } catch (e) { vmsg('تعذّر تحميل مشغّل يوتيوب. تأكد من الاتصال ثم افتح الدرس من جديد.'); return; }
+  if (S.view !== 'watch' || S.cur !== l || !$('#player')) return;
+  player = new YT.Player('player', {
+    videoId: l.id, width: '100%', height: '100%',
+    playerVars: { playsinline: 1, rel: 0, modestbranding: 1, cc_load_policy: l.lines.length ? 0 : 1, cc_lang_pref: 'en', hl: 'en', start: Math.max(0, Math.floor((l.pos || 0) - 1)), origin: location.origin },
+    events: {
+      onReady: () => {
+        try { const d = player.getVideoData && player.getVideoData(); if (d && d.title && !l.title) { l.title = d.title; persist(); const h = $('#wtitle'); if (h) h.textContent = l.title; } } catch (e) { /* ignore */ }
+        if (S.slow) { try { player.setPlaybackRate(0.75); } catch (e) { /* ignore */ } }
+        clearInterval(ticker); ticker = setInterval(tick, 100);
+      },
+      onStateChange: ev => { if (ev.data === 0) { S.ended = true; const b = $('#endbar'); if (b) b.hidden = false; } },
+      onError: ev => {
+        const c = ev && ev.data;
+        vmsg(c === 101 || c === 150 || c === 153 ? 'صاحب المقطع مانع تشغيله خارج يوتيوب. شاهده في يوتيوب، والكلام والمذاكرة يشتغلون هنا.' : c === 100 ? 'المقطع غير موجود أو خاص.' : 'تعذّر تشغيل المقطع.');
+      }
+    }
+  });
+}
+function tick() {
+  const l = S.cur; if (!player || !l || S.view !== 'watch' || !player.getCurrentTime) return;
+  let t = 0; try { t = player.getCurrentTime() || 0; } catch (e) { return; }
+  l.pos = t;
+  if (Date.now() - lastPosSave > 6000) { lastPosSave = Date.now(); saveSoon(); }
+  if (!l.timed || !l.lines.length) return;
+  const i = findLine(l.lines, t);
+  if (S.stopEach && S.li >= 0) {
+    const end = l.lines[S.li].e;
+    if (!S.release && playing() && t >= end - 0.15 && t < end + 1) { try { player.pauseVideo(); } catch (e) { /* ignore */ } S.release = true; return; }
+    if (S.release && !playing()) return;
+  }
+  if (i !== S.li) { S.release = false; setLine(i); }
+  if (l.precise && S.li >= 0) markWords(t);
+}
+function setLine(i) {
+  const l = S.cur, box = $('#script'); if (!box) return;
+  const old = box.querySelector('.line.cur'); if (old) { old.classList.remove('cur', 'kara'); old.querySelectorAll('.said,.now').forEach(e => e.classList.remove('said', 'now')); }
+  S.li = i; S.wk = -2;
+  if (i < 0) return;
+  const el = box.querySelector('.line[data-i="' + i + '"]'); if (!el) return;
+  el.classList.add('cur'); if (l.precise) el.classList.add('kara');
+  if (Date.now() > S.scrollHold) box.scrollTo({ top: Math.max(0, el.offsetTop - box.clientHeight * 0.32), behavior: 'smooth' });
+  if (i + 1 > (l.seen || 0)) l.seen = i + 1;
+  translateAhead(l, i);
+}
+function markWords(t) {
+  const ln = S.cur.lines[S.li]; let k = -1;
+  for (let j = 0; j < ln.w.length; j++) { if (ln.w[j].t <= t + 0.05) k = j; else break; }
+  if (k === S.wk) return; S.wk = k;
+  const el = $('#script .line.cur'); if (!el) return;
+  el.querySelectorAll('.w').forEach((w, j) => { w.classList.toggle('said', j < k); w.classList.toggle('now', j === k); });
+}
+function seekLine(i, play) {
+  const l = S.cur; if (!l || !l.lines[i]) return;
+  S.release = false; S.scrollHold = 0; setLine(i);
+  if (player && l.timed) { try { player.seekTo(Math.max(0, l.lines[i].s - 0.05), true); if (play) player.playVideo(); } catch (e) { /* ignore */ } }
+}
+
+/* ================= word sheet ================= */
+async function openWord(i, j) {
+  const l = S.cur, w = norm(l.lines[i].w[j].x); if (!w) return;
+  try { if (player) player.pauseVideo(); } catch (e) { /* ignore */ }
+  S.sheet = { w, i, ar: DICT[w] || '', note: NOTES[w] || '', loading: !DICT[w], err: false }; renderSheet();
+  if (DICT[w]) return;
+  try { const out = await mtBatch([w]); DICT[w] = out[0]; LS.set('mw2.dict', DICT); if (S.sheet && S.sheet.w === w) { S.sheet.ar = out[0]; S.sheet.loading = false; renderSheet(); } }
+  catch (e) { if (S.sheet && S.sheet.w === w) { S.sheet.loading = false; S.sheet.err = true; renderSheet(); } }
+}
+function renderSheet() {
+  const host = $('#sheet-host'), s = S.sheet;
+  if (!s) { host.innerHTML = ''; return; }
+  const saved = S.cur && (S.cur.saved || []).some(x => x.e === s.w);
+  host.innerHTML = `<div class="sheet" role="dialog" aria-label="معنى الكلمة">
+    <p class="sh-en" lang="en">${esc(s.w)}</p>
+    <p class="sh-ar">${s.loading ? '…' : s.err ? 'المعنى غير متاح الآن.' : esc(s.ar)}</p>
+    ${s.note ? `<p class="sh-note">${esc(s.note)}</p>` : ''}
+    <div class="sh-act">
+      <button class="btn btn-mark" data-a="sh-resume">كمّل المقطع</button>
+      <button class="btn" data-a="sh-save"${saved || s.loading || s.err ? ' disabled' : ''}>${saved ? 'محفوظة' : 'احفظ الكلمة'}</button>
+      <button class="btn" data-a="sh-close">إغلاق</button>
+    </div></div>`;
+}
+
+/* ================= PDF: pages drawn on canvas so Arabic shapes correctly ================= */
+const PW = 595.28, PH = 841.89, SC = 2.5, MX = 42, MT = 44, MB = 46, CW = PW - 2 * MX;
+const F = {
+  en: (sz, w) => (w || 400) + ' ' + sz + 'px "Newsreader", Georgia, "Times New Roman", serif',
+  ar: (sz, w) => (w || 400) + ' ' + sz + 'px "IBM Plex Sans Arabic", "Geeza Pro", Tahoma, "DejaVu Sans", sans-serif',
+  head: sz => '700 ' + sz + 'px "Noto Kufi Arabic", "IBM Plex Sans Arabic", "Geeza Pro", Tahoma, "DejaVu Sans", sans-serif'
+};
+const COL = { ink: '#141C30', soft: '#34405C', muted: '#5B657A', faintText: '#98A1B3', line: '#CCD3DF', chip: '#EEF1F6', mark: '#FFD23F', markInk: '#3A2E00' };
+async function loadFonts() {
+  if (!document.fonts || !document.fonts.load) return;
+  const reqs = [['400 16px "Newsreader"', 'Aa'], ['500 16px "Newsreader"', 'Aa'], ['600 16px "Newsreader"', 'Aa'], ['400 16px "IBM Plex Sans Arabic"', 'نص'], ['600 16px "IBM Plex Sans Arabic"', 'نص'], ['700 16px "Noto Kufi Arabic"', 'نص']];
+  await Promise.race([Promise.all(reqs.map(r => document.fonts.load(r[0], r[1]).catch(() => {}))), new Promise(r => setTimeout(r, 4000))]);
+}
+function packPdf(pages) {
+  const enc = new TextEncoder(), parts = [], xref = []; let off = 0;
+  const push = x => { const b = typeof x === 'string' ? enc.encode(x) : x; parts.push(b); off += b.length; };
+  const obj = (n, body) => { xref[n] = off; push(n + ' 0 obj\n'); body(); push('\nendobj\n'); };
+  push('%PDF-1.4\n%âãÏÓ\n');
+  obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, () => push('<< /Type /Pages /Count ' + pages.length + ' /Kids [' + pages.map((_, i) => (3 + 3 * i) + ' 0 R').join(' ') + '] >>'));
+  pages.forEach((p, i) => {
+    const pg = 3 + 3 * i, im = pg + 1, ct = pg + 2;
+    obj(pg, () => push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + im + ' 0 R >> >> /Contents ' + ct + ' 0 R >>'));
+    obj(im, () => { push('<< /Type /XObject /Subtype /Image /Width ' + p.w + ' /Height ' + p.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + p.bytes.length + ' >>\nstream\n'); push(p.bytes); push('\nendstream'); });
+    const content = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
+    obj(ct, () => push('<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream'));
+  });
+  const total = 3 + 3 * pages.length, start = off;
+  let x = 'xref\n0 ' + total + '\n0000000000 65535 f \n';
+  for (let k = 1; k < total; k++) x += String(xref[k]).padStart(10, '0') + ' 00000 n \n';
+  push(x + 'trailer\n<< /Size ' + total + ' /Root 1 0 R >>\nstartxref\n' + start + '\n%%EOF\n');
+  return new Blob(parts, { type: 'application/pdf' });
+}
+async function makeLessonPdf(l, sents, opt) {
+  await loadFonts();
+  const cv = document.createElement('canvas'); cv.width = Math.round(PW * SC); cv.height = Math.round(PH * SC);
+  const c = cv.getContext('2d'); if (!c) throw new Error('canvas');
+  const pages = []; let y = 0, page = 0;
+  const R = PW - MX;
+  const text = (str, font, color, x, yy, align, rtl) => { c.font = font; c.fillStyle = color; c.textBaseline = 'alphabetic'; c.direction = rtl ? 'rtl' : 'ltr'; c.textAlign = align || 'left'; c.fillText(str, x, yy); };
+  const width = (str, font) => { c.font = font; return c.measureText(str).width; };
+  const wrap = (str, font, maxW) => { c.font = font; const out = []; let cur = ''; for (const w of wordsOf(str)) { const t = cur ? cur + ' ' + w : w; if (!cur || c.measureText(t).width <= maxW) cur = t; else { out.push(cur); cur = w; } } if (cur) out.push(cur); return out; };
+  const fit = (str, font, maxW) => { if (width(str, font) <= maxW) return str; let s = str; while (s.length > 1 && width(s + '…', font) > maxW) s = s.slice(0, -1); return s + '…'; };
+  const box = (x, yy, w, h, r, color) => { c.fillStyle = color; c.beginPath(); c.moveTo(x + r, yy); c.arcTo(x + w, yy, x + w, yy + h, r); c.arcTo(x + w, yy + h, x, yy + h, r); c.arcTo(x, yy + h, x, yy, r); c.arcTo(x, yy, x + w, yy, r); c.closePath(); c.fill(); };
+  const begin = () => { page++; c.setTransform(SC, 0, 0, SC, 0, 0); c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, PW, PH); y = MT; };
+  const flush = async () => {
+    text(String(page), F.en(9.5), COL.muted, PW / 2, PH - 22, 'center');
+    const blob = await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.9));
+    if (!blob) throw new Error('jpeg');
+    pages.push({ bytes: new Uint8Array(await blob.arrayBuffer()), w: cv.width, h: cv.height });
+  };
+  const need = async h => { if (y + h > PH - MB) { await flush(); begin(); } };
+  const heading = str => { const f = F.head(14); text(str, f, COL.ink, R, y + 16, 'right', true); const w = width(str, f); c.fillStyle = COL.mark; c.fillRect(R - w, y + 23, w, 3); y += 40; };
+
+  begin();
+  text('مقطع ودرس', F.head(10), COL.muted, R, y + 9, 'right', true);
+  text(new Date(l.createdAt || Date.now()).toISOString().slice(0, 10), F.en(10), COL.muted, MX, y + 9, 'left');
+  y += 26;
+  const title = l.title || 'YouTube clip', tAr = isAr(title), tFont = tAr ? F.head(18) : F.en(22, 600), tLines = wrap(title, tFont, CW).slice(0, 3);
+  tLines.forEach((ln, k) => text(ln, tFont, COL.ink, tAr ? R : MX, y + 20 + k * 29, tAr ? 'right' : 'left', tAr));
+  y += tLines.length * 29 + 4;
+  text('youtu.be/' + l.id, F.en(9), COL.muted, MX, y + 10, 'left'); y += 16;
+  y += 8; c.fillStyle = COL.ink; c.fillRect(MX, y, CW, 1.6); c.fillStyle = COL.mark; c.fillRect(R - 72, y - 1.2, 72, 4); y += 24;
+
+  const GUT = 24, X0 = MX + GUT, W = CW - GUT, fe = F.en(13.5, 500), fa = F.ar(11.5);
+  for (let i = 0; i < sents.length; i++) {
+    const s = sents[i];
+    const enL = wrap(s.en, fe, W), arL = s.ar ? wrap(s.ar, fa, W) : [];
+    const chips = (s.v || []).map(v => ({ e: v.e, a: v.a }));
+    if (s.gw) chips.push({ e: s.gw, a: 'الكلمة الصغيرة', mark: true });
+    chips.forEach(ch => { ch.w = Math.min(W, Math.max(width(ch.e, F.en(11.5, 600)), width(ch.a, F.ar(9.5))) + 18); });
+    const rows = []; let row = [], rw = 0;
+    for (const ch of chips) { if (row.length && rw + ch.w > W) { rows.push(row); row = []; rw = 0; } row.push(ch); rw += ch.w + 6; }
+    if (row.length) rows.push(row);
+    const gaL = s.gw && s.ga ? wrap(s.ga, F.ar(10.5), W - 16) : [];
+    const hEn = enL.length * 19.5, hAr = arL.length * 19.5, hCh = rows.length * 41, hGa = gaL.length * 17.5;
+    const total = hEn + 3 + hAr + (rows.length ? 9 + hCh : 0) + (gaL.length ? 3 + hGa : 0) + (opt.lines ? 56 : 0) + 20;
+    await need(total);
+    text(String(i + 1), F.en(11, 600), COL.muted, MX, y + 14, 'left');
+    enL.forEach((ln, k) => text(ln, fe, COL.ink, X0, y + 14 + k * 19.5, 'left')); y += hEn + 3;
+    arL.forEach((ln, k) => text(ln, fa, COL.soft, R, y + 14 + k * 19.5, 'right', true)); y += hAr;
+    if (rows.length) {
+      y += 9;
+      for (const r of rows) {
+        let x = X0;
+        for (const ch of r) {
+          box(x, y, ch.w, 35, 5, ch.mark ? COL.mark : COL.chip);
+          text(fit(ch.e, F.en(11.5, 600), ch.w - 16), F.en(11.5, 600), COL.ink, x + 9, y + 14.5, 'left');
+          text(fit(ch.a, F.ar(9.5), ch.w - 16), F.ar(9.5), ch.mark ? COL.markInk : COL.muted, x + ch.w - 9, y + 28.5, 'right', true);
+          x += ch.w + 6;
+        }
+        y += 41;
+      }
+    }
+    if (gaL.length) { y += 3; c.fillStyle = COL.mark; c.fillRect(R - 7, y + 4.5, 7, 7); gaL.forEach((ln, k) => text(ln, F.ar(10.5), COL.ink, R - 15, y + 12 + k * 17.5, 'right', true)); y += hGa; }
+    if (opt.lines) {
+      text('اكتب الجملة بخطك', F.ar(8), COL.faintText, R, y + 14, 'right', true);
+      c.strokeStyle = COL.line; c.lineWidth = 0.7;
+      [33, 54].forEach(d => { c.beginPath(); c.moveTo(X0, y + d); c.lineTo(R, y + d); c.stroke(); });
+      y += 56;
+    }
+    y += 20;
+  }
+  if (opt.extra) {
+    const vocab = vocabList(sents);
+    if (vocab.length) {
+      await need(40 + 42); heading('كلمات المقطع');
+      const cols = 3, gapX = 14, cw = (CW - gapX * (cols - 1)) / cols;
+      for (let k = 0; k < vocab.length; k += cols) {
+        await need(42);
+        for (let j = 0; j < cols && k + j < vocab.length; j++) {
+          const v = vocab[k + j], x = MX + j * (cw + gapX);
+          text(fit(v.e, F.en(12.5, 600), cw), F.en(12.5, 600), COL.ink, x, y + 13, 'left');
+          text(fit(v.a, F.ar(10.5), cw), F.ar(10.5), COL.muted, x + cw, y + 30, 'right', true);
+          c.fillStyle = COL.line; c.fillRect(x, y + 36.5, cw, 0.6);
+        }
+        y += 42;
+      }
+      y += 14;
+    }
+    const all = sents.map(gapFor).filter(Boolean), step = Math.max(1, Math.floor(all.length / 8));
+    const gaps = all.filter((_, k) => k % step === 0).slice(0, 8);
+    if (gaps.length) {
+      await need(40 + 22 + 60); heading('اختبر نفسك');
+      text('أي كلمة قالها المتحدث في كل جملة؟', F.ar(10.5), COL.muted, R, y + 4, 'right', true); y += 22;
+      for (let k = 0; k < gaps.length; k++) {
+        const g = gaps[k], lines = wrap(g.before + '________' + g.after, F.en(12.5), W);
+        await need(lines.length * 18.5 + 30);
+        text(String(k + 1), F.en(11, 600), COL.muted, MX, y + 13, 'left');
+        lines.forEach((ln, m) => text(ln, F.en(12.5), COL.ink, X0, y + 13 + m * 18.5, 'left')); y += lines.length * 18.5;
+        text(g.options.join('     /     '), F.en(11, 500), COL.muted, X0, y + 14, 'left'); y += 32;
+      }
+      const key = wrap(gaps.map((g, k) => (k + 1) + '. ' + g.answer).join('  ·  '), F.en(10), CW);
+      await need(24 + key.length * 15);
+      text('الإجابات', F.ar(9.5, 600), COL.muted, R, y + 10, 'right', true); y += 18;
+      key.forEach((ln, m) => text(ln, F.en(10), COL.muted, MX, y + 10 + m * 15, 'left')); y += key.length * 15;
+    }
+  }
+  await flush();
+  return packPdf(pages);
+}
+async function buildPdf() {
+  const l = S.cur; if (!l || S.pdf.busy) return;
+  S.pdf.busy = true; S.pdf.err = false; S.pdf.file = null; S.pdf.msg = 'يجهّز الملف…'; render();
+  try {
+    const blob = await makeLessonPdf(l, sentsOf(), { lines: S.pdf.lines, extra: S.pdf.extra });
+    const name = ((l.title || 'lesson').replace(/[\\/:*?"<>|\u0000-\u001F]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60) || 'lesson') + '.pdf';
+    S.pdf.file = new File([blob], name, { type: 'application/pdf' });
+    S.pdf.msg = 'الملف جاهز.';
+  } catch (e) { S.pdf.err = true; S.pdf.msg = 'تعذّر تجهيز الملف. جرّب مرة ثانية.'; }
+  S.pdf.busy = false; render();
+}
+async function sharePdf() {
+  const f = S.pdf.file; if (!f) return;
+  if (navigator.canShare && navigator.canShare({ files: [f] })) {
+    try { await navigator.share({ files: [f], title: f.name }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+}
+
+/* ================= views ================= */
+const site = () => location.origin + location.pathname;
+const bookmarklet = () => 'javascript:' + encodeURIComponent(GRAB.replace('__SITE__', site()));
+function markUp(s, only) {
+  const text = s.en, ranges = [];
+  (only ? [{ e: only }] : (s.v || [])).forEach(v => {
+    if (!v.e || v.e.length < 2) return;
+    const m = new RegExp('(^|[^A-Za-z])(' + escRe(v.e) + ')(?![A-Za-z])', 'i').exec(text);
+    if (m) ranges.push([m.index + m[1].length, m.index + m[1].length + m[2].length]);
+  });
+  ranges.sort((a, b) => a[0] - b[0]);
+  let out = '', p = 0;
+  for (const r of ranges) { if (r[0] < p) continue; out += esc(text.slice(p, r[0])) + '<mark>' + esc(text.slice(r[0], r[1])) + '</mark>'; p = r[1]; }
+  return out + esc(text.slice(p));
+}
+function setupHTML(open) {
+  return `<div class="setup" id="setup">
+    <h2>زر السحب: يتركّب مرة واحدة</h2>
+    <p class="msg">يوتيوب ما يعطي كلام المقطع لأي موقع خارجي. الحل زر صغير تحطه في مفضلة سفاري: تفتح المقطع في يوتيوب، تضغط الزر، وينتقل المقطع بكلامه إلى هنا.</p>
+    <details${open ? ' open' : ''}>
+      <summary>طريقة التركيب على الآيباد</summary>
+      <ol>
+        <li>اضغط «انسخ كود الزر» تحت.</li>
+        <li>أضف هذه الصفحة لمفضلة سفاري: زر المشاركة، ثم إضافة إشارة مرجعية.</li>
+        <li>افتح قائمة الإشارات المرجعية، اضغط تحرير، واختر الإشارة اللي أضفتها.</li>
+        <li>سمّها «مقطع ودرس»، وامسح العنوان كله والصق الكود مكانه، ثم احفظ.</li>
+      </ol>
+      <div class="row" style="margin-block-start:12px">
+        <button class="btn btn-primary" data-a="copy-grab">انسخ كود الزر</button>
+        <a class="btn" id="grab-link" href="#">مقطع ودرس</a>
+        <span class="msg" id="copy-msg">على الكمبيوتر: اسحب الزر الثاني إلى شريط المفضلة.</span>
+      </div>
+      <textarea id="grab-code" readonly hidden aria-label="كود الزر"></textarea>
+    </details>
+    <p class="msg">الاستخدام: افتح المقطع في يوتيوب من سفاري، ثم اضغط «مقطع ودرس» من الإشارات.</p>
+  </div>`;
+}
+function homeHTML() {
+  return `
+<section class="home">
+  <div class="hero">
+    <h1>تعلّم الإنجليزي من المقاطع اللي تحبها</h1>
+    <p class="lede">شغّل أي مقطع من يوتيوب والكلام يمشي معه جملة جملة. اضغط أي كلمة تعرف معناها، وبعد المقطع ذاكر واختبر نفسك ونزّل ملف المذاكرة.</p>
+    <div class="prompter linkbox">
+      <label class="sr" for="f-url">رابط المقطع من يوتيوب</label>
+      <input id="f-url" type="url" dir="ltr" inputmode="url" autocomplete="off" placeholder="youtube.com/watch?v=…">
+      <button class="btn btn-mark" data-a="go">شغّل المقطع</button>
+    </div>
+    <p id="home-msg" class="msg${S.homeErr ? ' err' : ''}">${esc(S.homeMsg)}</p>
+    ${setupHTML(!LS.get('mw2.setup', false))}
+  </div>
+  <div class="shelf">
+    <h2>دروسي</h2>
+    <div id="lesson-list"></div>
+  </div>
+</section>`;
+}
+function listHTML() {
+  if (!S.lessons.length) return '<p class="empty">أول مقطع تشغّله يظهر هنا، وترجع له متى ما تبغى.</p>';
+  return S.lessons.map(l => {
+    ensureLines(l);
+    const n = l.lines.length, pct = n ? Math.round(Math.min(n, l.seen || 0) / n * 100) : 0;
+    return `<article class="lcard">
+      <button class="lcard-main" data-a="open" data-id="${esc(l.id)}">
+        <img class="thumb" alt="" loading="lazy" src="https://i.ytimg.com/vi/${esc(l.id)}/mqdefault.jpg">
+        <span class="lcard-text">
+          <span class="lcard-title" dir="auto">${esc(l.title || 'مقطع بدون اسم')}</span>
+          <span class="lcard-meta">${sentCount(n)}${l.saved && l.saved.length ? ' · ' + savedCount(l.saved.length) : ''}</span>
+          <span class="lbar"><i style="inline-size:${pct}%"></i></span>
+        </span>
+      </button>
+      <button class="lcard-del${S.confirmDel === l.id ? ' sure' : ''}" data-a="del" data-id="${esc(l.id)}">${S.confirmDel === l.id ? 'تأكيد الحذف' : 'حذف'}</button>
+    </article>`;
+  }).join('');
+}
+function renderList() { const el = $('#lesson-list'); if (el) el.innerHTML = listHTML(); }
+function scriptHTML(l) {
+  if (!l.lines.length) {
+    return `<div class="need">
+      <h2>باقي خطوة: سحب كلام المقطع</h2>
+      <p>المقطع يشتغل فوق بترجمة يوتيوب نفسه. عشان الكلام يمشي معه هنا وتضغط الكلمات وتذاكر، افتحه في يوتيوب واضغط زر «مقطع ودرس» من إشارات سفاري.</p>
+      <a class="btn btn-mark" href="https://www.youtube.com/watch?v=${esc(l.id)}" target="_blank" rel="noopener">افتح المقطع في يوتيوب</a>
+      <p>لو انفتح تطبيق يوتيوب بدل سفاري: اضغط مطولاً على الزر واختر الفتح في علامة تبويب جديدة. وإذا ما ركّبت الزر بعد، <a class="plain" href="#" data-a="home-setup">ركّبه من هنا</a>.</p>
+      <details>
+        <summary>أو الصق الكلام يدوياً</summary>
+        <label class="sr" for="f-paste">نص المقطع</label>
+        <textarea id="f-paste" lang="en" placeholder="Paste the transcript here…" spellcheck="false"></textarea>
+        <div class="row" style="margin-block-start:10px"><button class="btn" data-a="paste">استخدم هذا الكلام</button><span class="msg" id="paste-msg" style="color:#C9D1E3">لو فيه أرقام الوقت اتركها، يستفيد منها التطبيق في المزامنة.</span></div>
+      </details>
+    </div>`;
+  }
+  return l.lines.map((ln, i) => `<div class="line" data-i="${i}"><p class="l-en" lang="en">${ln.w.map((k, j) => `<span class="w${NOTES[norm(k.x)] ? ' fn' : ''}" data-k="${j}">${esc(k.x)}</span>`).join(' ')}</p><p class="l-ar" data-ar="${i}">${esc(l.ar[i] || '')}</p></div>`).join('') +
+    `<div class="endbar" id="endbar"${S.ended ? '' : ' hidden'}><span>خلص المقطع. جاهز تذاكره؟</span><button class="btn" data-a="study">ابدأ المذاكرة</button></div>`;
+}
+function watchHTML() {
+  const l = S.cur, has = l.lines.length > 0;
+  const chip = (a, label, on) => `<button class="chip" data-a="${a}" aria-pressed="${!!on}">${label}</button>`;
+  return `
+<section class="watch">
+  <div class="side">
+    <div class="vbox"><div id="player"></div><p id="vmsg" class="vmsg" hidden></p></div>
+    <p class="wtitle" id="wtitle" dir="auto">${esc(l.title || '')}</p>
+    <div class="ctrl">
+      ${has && l.timed ? '<button class="chip" data-a="replay">أعد الجملة</button>' + chip('t-stop', 'وقفة بعد كل جملة', S.stopEach) : ''}
+      ${chip('t-slow', 'سرعة أهدأ', S.slow)}
+      ${has ? chip('t-ar', 'الترجمة العربية', S.showAr) + '<button class="btn btn-mark" data-a="study">المذاكرة</button>' : ''}
+    </div>
+  </div>
+  <div class="script prompter${has ? '' : ' bare'}${S.showAr ? '' : ' no-ar'}" id="script">${scriptHTML(l)}</div>
+</section>`;
+}
+function explainHTML(s) {
+  return `<div class="explain">
+    ${s.ar ? `<p class="tr">${esc(s.ar)}</p>` : `<p class="msg">${S.prep ? 'الترجمة تتجهّز…' : 'الترجمة غير متاحة لهذه الجملة الآن.'}</p>`}
+    ${s.v && s.v.length ? `<div><h3>كلمات مهمة</h3><ul class="vocab">${s.v.map(v => `<li><span class="v-en" lang="en">${esc(v.e)}</span><span class="v-ar">${esc(v.a)}</span></li>`).join('')}</ul></div>` : ''}
+    ${s.gw && s.ga ? `<div class="gram"><h3>الكلمة الصغيرة</h3><span class="g-en" lang="en">${esc(s.gw)}</span><p class="g-ar">${esc(s.ga)}</p></div>` : ''}
+  </div>`;
+}
+function stepHTML() {
+  const sents = sentsOf(), n = sents.length;
+  const i = Math.min(S.idx, n - 1), s = sents[i], show = S.shown || !S.hideFirst, last = i === n - 1;
+  return `
+  <div class="progress"><div class="bar"><i style="inline-size:${(i + 1) / n * 100}%"></i></div><span class="count" dir="ltr">${i + 1} / ${n}</span></div>
+  <div class="prompter stage">
+    <p class="sent" lang="en">${markUp(s)}</p>
+    <div class="listen">${S.cur.timed ? '<button class="pbtn" data-a="from-clip">اسمعها من المقطع</button>' : ''}${hasSynth ? '<button class="pbtn" data-a="say">نطق آلي</button><button class="pbtn" data-a="say-slow">نطق آلي بطيء</button>' : ''}</div>
+  </div>
+  ${show ? explainHTML(s) : '<button class="reveal" data-a="reveal">حاول تفهم الجملة أولاً، ثم اضغط هنا للترجمة والشرح</button>'}
+  <div class="stepnav"><button class="btn" data-a="prev"${i === 0 ? ' disabled' : ''}>السابق</button>${last ? '<button class="btn btn-mark" data-a="tab" data-tab="quiz">ابدأ الاختبار</button>' : '<button class="btn btn-primary" data-a="next">التالي</button>'}</div>
+  <label class="opt-line"><input type="checkbox" id="opt-hide"${S.hideFirst ? ' checked' : ''}> أخفِ الترجمة والشرح إلى أن أضغط</label>`;
+}
+function wordsHTML() {
+  const l = S.cur, list = l.saved || [];
+  if (!list.length) return '<p class="empty">وقت المقطع، اضغط أي كلمة واحفظها. تلقاها هنا، وتدخل في الاختبار وفي ملف المذاكرة.</p>';
+  return `<ul class="vocab">${list.map((v, k) => `<li><span class="v-en" lang="en">${esc(v.e)}</span><span class="v-ar">${esc(v.a)}</span><button class="v-del" data-a="unsave" data-i="${k}" aria-label="احذف الكلمة">حذف</button></li>`).join('')}</ul>`;
+}
+function quizHTML() {
+  const Q = S.quiz, total = Q.qs.length;
+  if (!total) return '<p class="empty">الاختبار يحتاج بضع جمل. جرّب مقطعاً أطول.</p>';
+  if (Q.i >= total) {
+    const r = Q.score / total;
+    return `<div class="result"><p class="score" dir="ltr">${Q.score} / ${total}</p>
+      <p class="q-ar">${r === 1 ? 'ممتاز، كل الإجابات صحيحة.' : r >= 0.7 ? 'شغل جيد. راجع الجمل اللي أخطأت فيها وأعد المحاولة.' : 'ارجع للجمل مرة ثانية ثم أعد الاختبار.'}</p>
+      <div class="row"><button class="btn btn-primary" data-a="q-restart">اختبار جديد</button><button class="btn" data-a="tab" data-tab="step">رجوع للجمل</button></div></div>`;
+  }
+  const q = Q.qs[Q.i], done = Q.picked !== null;
+  const head = `<div class="progress"><div class="bar"><i style="inline-size:${Q.i / total * 100}%"></i></div><span class="count" dir="ltr">${Q.i + 1} / ${total}</span></div>`;
+  let body = '', ok = false;
+  if (q.type === 'gap' || q.type === 'vocab') {
+    ok = done && q.options[Q.picked] === q.answer;
+    const cls = (o, k) => !done ? '' : o === q.answer ? ' right' : k === Q.picked ? ' wrong' : '';
+    const opts = `<div class="opts"${q.type === 'gap' ? ' dir="ltr"' : ''}>${q.options.map((o, k) => `<button class="opt${q.type === 'gap' ? ' en' : ''}${cls(o, k)}" data-a="q-opt" data-i="${k}"${done ? ' disabled' : ''}>${esc(o)}</button>`).join('')}</div>`;
+    body = q.type === 'gap'
+      ? `<p class="q-label">أي كلمة قالها المتحدث هنا؟</p><p class="q-en" lang="en">${esc(q.before)}<span class="gap">${done ? esc(q.answer) : '&nbsp;'}</span>${esc(q.after)}</p>${opts}`
+      : `<p class="q-label">ما معنى هذه الكلمة في المقطع؟</p><p class="q-word" lang="en">${esc(q.word)}</p><p class="q-en" lang="en">${markUp({ en: q.ctx }, q.word)}</p>${opts}`;
+  } else {
+    ok = done && Q.picked === 'ok';
+    body = `<p class="q-label">رتّب الكلمات لتكوّن الجملة</p>${q.ar ? `<p class="q-ar">${esc(q.ar)}</p>` : ''}
+      <div class="built" lang="en">${Q.built.map((k, pos) => `<button class="wd" data-a="q-unpick" data-i="${pos}"${done ? ' disabled' : ''}>${esc(q.words[k])}</button>`).join('')}</div>
+      <div class="bank" lang="en">${q.words.map((w, k) => `<button class="wd${Q.built.includes(k) ? ' used' : ''}" data-a="q-pick" data-i="${k}"${done ? ' disabled' : ''}>${esc(w)}</button>`).join('')}</div>
+      ${done ? '' : `<div class="row"><button class="btn btn-primary" data-a="q-check"${Q.built.length === q.words.length ? '' : ' disabled'}>تحقّق</button></div>`}`;
+  }
+  const fb = !done ? '' : `<div class="fb ${ok ? 'ok' : 'no'}"><strong>${ok ? 'صحيح' : 'الإجابة الصحيحة'}</strong>
+      ${ok ? '' : `<span class="fb-en" lang="en">${esc(q.answer)}</span>`}
+      ${q.why ? `<p>${esc(q.why)}</p>` : ''}${q.type === 'gap' && q.ar ? `<p class="fb-tr">${esc(q.ar)}</p>` : ''}</div>
+    <div class="row"><button class="btn btn-primary" data-a="q-next">${Q.i === total - 1 ? 'النتيجة' : 'السؤال التالي'}</button></div>`;
+  return `<div class="quiz">${head}${body}${fb}</div>`;
+}
+function studyHTML() {
+  const l = S.cur;
+  const banner = S.prep ? `<div class="banner"><span class="live"><span class="dot"></span><span id="preptxt">${esc(prepText())}</span></span></div>`
+    : S.prepErr ? `<div class="banner"><span>${esc(S.prepErr)}</span><button class="btn" data-a="retry-prep">جرّب الترجمة</button></div>` : '';
+  const pdf = !S.pdf.open ? '' : `<div class="panel">
+      <label><input type="checkbox" id="pdf-lines"${S.pdf.lines ? ' checked' : ''}> سطور فاضية تحت كل جملة للكتابة بالقلم</label>
+      <label><input type="checkbox" id="pdf-extra"${S.pdf.extra ? ' checked' : ''}> صفحة الكلمات والاختبار في النهاية</label>
+      <div class="row">
+        ${S.pdf.file ? '<button class="btn btn-mark" data-a="pdf-share">افتح الملف أو شاركه</button><button class="btn" data-a="pdf-make">أعد التجهيز</button>' : `<button class="btn btn-mark" data-a="pdf-make"${S.pdf.busy || S.prep ? ' disabled' : ''}>جهّز الملف</button>`}
+        <span class="msg${S.pdf.err ? ' err' : ''}">${esc(S.prep && !S.pdf.file ? 'انتظر الترجمة تخلص أولاً.' : S.pdf.msg)}</span>
+      </div>
+    </div>`;
+  const tab = (id, label) => `<button class="tab" role="tab" data-a="tab" data-tab="${id}" aria-selected="${S.tab === id}">${label}</button>`;
+  return `
+<section class="study">
+  <div class="shead">
+    <h1 dir="auto">${esc(l.title || '')}</h1>
+    <div class="row"><button class="btn btn-primary" data-a="pdf-open">ملف المذاكرة</button></div>
+  </div>
+  ${pdf}${banner}
+  <div class="tabs" role="tablist">${tab('step', 'جملة جملة')}${tab('words', 'كلماتي')}${tab('quiz', 'اختبار')}</div>
+  ${S.tab === 'step' ? stepHTML() : S.tab === 'words' ? wordsHTML() : quizHTML()}
+</section>`;
+}
+function render() {
+  const app = $('#app'), nav = $('#topnav');
+  document.body.classList.toggle('fixed', S.view === 'watch');
+  if (S.view !== 'watch') { destroyPlayer(); S.sheet = null; renderSheet(); }
+  const l = S.cur;
+  nav.innerHTML = (S.view === 'watch' || S.view === 'study') && l && l.lines.length
+    ? `<div class="seg" role="tablist"><button data-a="watch" aria-selected="${S.view === 'watch'}">المقطع</button><button data-a="study" aria-selected="${S.view === 'study'}">المذاكرة</button></div>` : '';
+  if (S.view === 'watch' && l) { app.innerHTML = watchHTML(); S.li = -1; S.release = false; mountPlayer(l); if (l.lines.length) translateAhead(l, Math.max(0, findLine(l.lines, l.pos || 0))); return; }
+  if (S.view === 'study' && l) { app.innerHTML = studyHTML(); return; }
+  S.view = 'home'; S.cur = null;
+  app.innerHTML = homeHTML();
+  const a = $('#grab-link'); if (a) a.setAttribute('href', bookmarklet());
+  renderList();
+}
+function openWatch(l) { ensureLines(l); S.cur = l; S.view = 'watch'; S.ended = false; S.sents = null; S.quiz = null; S.confirmDel = ''; render(); window.scrollTo(0, 0); }
+function openStudy() {
+  const l = S.cur; if (!l || !l.lines.length) return;
+  if (S.view !== 'study') { S.tab = 'step'; S.shown = false; S.quiz = null; S.sents = null; S.idx = Math.min(Math.max(0, S.li), l.lines.length - 1); if (S.ended) S.idx = 0; S.pdf.open = false; S.pdf.file = null; S.pdf.msg = ''; }
+  S.view = 'study'; render(); window.scrollTo(0, 0);
+  prepareStudy(l);
+}
+function setIdx(i) { const n = sentsOf().length; S.idx = Math.max(0, Math.min(n - 1, i)); S.shown = false; render(); }
+function importHash() {
+  const m = location.hash.match(/^#g=([\w-]+)/); if (!m) return false;
+  const clean = () => { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* ignore */ } };
+  try {
+    const g = decodeGrab(m[1]);
+    if (!/^[\w-]{11}$/.test(g.id) || !g.body) throw new Error('bad');
+    let l = S.lessons.find(x => x.id === g.id);
+    if (!l) { l = { id: g.id, title: '', createdAt: Date.now(), body: '', ar: [], saved: [], vocab: null, pos: 0, seen: 0 }; S.lessons.unshift(l); }
+    if (l.body !== g.body) { l.body = g.body; l.ar = []; l.vocab = null; }
+    if (g.title) l.title = g.title;
+    LS.set('mw2.setup', true); persist(); clean(); openWatch(l); toast('انسحب كلام المقطع.');
+    return true;
+  } catch (e) { clean(); toast('البيانات القادمة من الزر غير مكتملة. جرّب مرة ثانية.'); return false; }
+}
+
+/* ================= events ================= */
+document.addEventListener('click', e => {
+  const word = e.target.closest('#script .w');
+  if (word && S.view === 'watch') { const ln = word.closest('.line'); openWord(+ln.dataset.i, +word.dataset.k); return; }
+  const line = e.target.closest('#script .line');
+  if (line && S.view === 'watch') { seekLine(+line.dataset.i, true); return; }
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  const a = el.dataset.a, Q = S.quiz, q = Q && Q.qs[Q.i], l = S.cur;
+  if (a !== 'del' && S.confirmDel) S.confirmDel = '';
+  switch (a) {
+    case 'home': if (hasSynth) { try { speechSynthesis.cancel(); } catch (x) { /* ignore */ } } persist(); S.view = 'home'; render(); window.scrollTo(0, 0); break;
+    case 'home-setup': e.preventDefault(); LS.set('mw2.setup', false); S.view = 'home'; render(); { const s = $('#setup'); if (s) s.scrollIntoView({ block: 'start' }); } break;
+    case 'go': {
+      const id = videoId($('#f-url').value);
+      if (!id) { S.homeMsg = 'الصق رابط مقطع من يوتيوب.'; S.homeErr = true; const m = $('#home-msg'); m.textContent = S.homeMsg; m.className = 'msg err'; break; }
+      S.homeMsg = ''; S.homeErr = false;
+      let x = S.lessons.find(k => k.id === id);
+      if (!x) { x = { id, title: '', createdAt: Date.now(), body: '', ar: [], saved: [], vocab: null, pos: 0, seen: 0 }; S.lessons.unshift(x); persist(); }
+      openWatch(x); break;
+    }
+    case 'open': { const x = S.lessons.find(k => k.id === el.dataset.id); if (x) openWatch(x); break; }
+    case 'del': { const id = el.dataset.id; if (S.confirmDel === id) { S.confirmDel = ''; S.lessons = S.lessons.filter(k => k.id !== id); persist(); } else S.confirmDel = id; renderList(); break; }
+    case 'copy-grab': {
+      const code = bookmarklet(), msg = $('#copy-msg'), box = $('#grab-code');
+      const fallback = () => { box.hidden = false; box.value = code; box.focus(); box.select(); msg.textContent = 'انسخ الكود من المربع يدوياً.'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(() => { msg.textContent = 'انتسخ الكود. كمّل الخطوات.'; }, fallback); else fallback();
+      break;
+    }
+    case 'watch': if (l) { S.view = 'watch'; render(); } break;
+    case 'study': openStudy(); break;
+    case 'replay': if (l && S.li >= 0) seekLine(S.li, true); break;
+    case 't-stop': S.stopEach = !S.stopEach; S.release = false; el.setAttribute('aria-pressed', S.stopEach); break;
+    case 't-slow': S.slow = !S.slow; el.setAttribute('aria-pressed', S.slow); try { if (player) player.setPlaybackRate(S.slow ? 0.75 : 1); } catch (x) { /* ignore */ } break;
+    case 't-ar': S.showAr = !S.showAr; LS.set('mw2.showAr', S.showAr); el.setAttribute('aria-pressed', S.showAr); $('#script').classList.toggle('no-ar', !S.showAr); if (S.showAr && l) translateAhead(l, Math.max(0, S.li)); break;
+    case 'paste': {
+      const rows = parsePaste($('#f-paste').value);
+      if (rows.reduce((n, r) => n + wordsOf(r[1]).length, 0) < 5) { $('#paste-msg').textContent = 'الصق نص المقطع بالإنجليزي أولاً.'; break; }
+      l.body = makeBody(rows); l.ar = []; l.vocab = null; persist(); openWatch(l); break;
+    }
+    case 'sh-close': S.sheet = null; renderSheet(); break;
+    case 'sh-resume': S.sheet = null; renderSheet(); try { if (player) player.playVideo(); } catch (x) { /* ignore */ } break;
+    case 'sh-save': if (S.sheet && l && S.sheet.ar && !l.saved.some(x => x.e === S.sheet.w)) { l.saved.push({ e: S.sheet.w, a: S.sheet.ar }); S.sents = null; persist(); renderSheet(); } break;
+    case 'unsave': l.saved.splice(+el.dataset.i, 1); S.sents = null; persist(); render(); break;
+    case 'retry-prep': S.prepErr = ''; gtxFails = 0; mtBlockedUntil = 0; prepareStudy(l); break;
+    case 'tab': S.tab = el.dataset.tab; if (S.tab === 'quiz' && (!S.quiz || !S.quiz.qs.length || S.quiz.i >= S.quiz.qs.length)) startQuiz(); render(); break;
+    case 'prev': setIdx(S.idx - 1); break;
+    case 'next': setIdx(S.idx + 1); break;
+    case 'reveal': S.shown = true; render(); break;
+    case 'say': case 'say-slow': { const s = sentsOf()[S.idx]; if (s) speak(s.en, a === 'say-slow'); break; }
+    case 'from-clip': { const i = sentsOf()[S.idx].i; l.pos = l.lines[i].s; S.view = 'watch'; S.stopEach = true; render(); toast('اضغط تشغيل. يوقف بعد الجملة.'); break; }
+    case 'pdf-open': S.pdf.open = !S.pdf.open; S.pdf.msg = ''; S.pdf.err = false; render(); break;
+    case 'pdf-make': buildPdf(); break;
+    case 'pdf-share': sharePdf(); break;
+    case 'q-opt': if (q && Q.picked === null) { Q.picked = +el.dataset.i; if (q.options[Q.picked] === q.answer) Q.score++; render(); } break;
+    case 'q-pick': if (q && Q.picked === null && !Q.built.includes(+el.dataset.i)) { Q.built.push(+el.dataset.i); render(); } break;
+    case 'q-unpick': if (q && Q.picked === null) { Q.built.splice(+el.dataset.i, 1); render(); } break;
+    case 'q-check': if (q && Q.picked === null) { const ok = Q.built.map(k => q.words[k]).join(' ') === q.answer; Q.picked = ok ? 'ok' : 'no'; if (ok) Q.score++; render(); } break;
+    case 'q-next': if (Q) { Q.i++; Q.picked = null; Q.built = []; render(); } break;
+    case 'q-restart': startQuiz(); render(); break;
+  }
+});
+document.addEventListener('change', e => {
+  const id = e.target.id;
+  if (id === 'opt-hide') { S.hideFirst = e.target.checked; LS.set('mw2.hideFirst', S.hideFirst); render(); }
+  else if (id === 'pdf-lines') { S.pdf.lines = e.target.checked; S.pdf.file = null; render(); }
+  else if (id === 'pdf-extra') { S.pdf.extra = e.target.checked; S.pdf.file = null; render(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'f-url') { e.preventDefault(); const b = $('[data-a="go"]'); if (b) b.click(); return; }
+  if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName) || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (S.view === 'study' && S.tab === 'step') { if (e.key === 'ArrowRight') setIdx(S.idx + 1); else if (e.key === 'ArrowLeft') setIdx(S.idx - 1); }
+  else if (S.view === 'watch' && S.cur && S.cur.timed) { if (e.key === 'ArrowRight') seekLine(Math.min(S.cur.lines.length - 1, S.li + 1), true); else if (e.key === 'ArrowLeft') seekLine(Math.max(0, S.li - 1), true); }
+});
+['touchstart', 'wheel'].forEach(ev => document.addEventListener(ev, e => { if (e.target.closest && e.target.closest('#script')) S.scrollHold = Date.now() + 4000; }, { passive: true }));
+window.addEventListener('hashchange', importHash);
+window.addEventListener('pagehide', persist);
+
+/* ================= boot ================= */
+if (!importHash()) render();
+})();
+</script>
+</body>
+</html>
